@@ -1,0 +1,52 @@
+import json
+from datetime import datetime
+
+class CrimeTracker:
+    def __init__(self):
+        self.crime_data = []
+
+    def report_crime(self, location, crime_type, description):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        crime_entry = {
+            "timestamp": timestamp,
+            "location": location,
+            "crime_type": crime_type,
+            "description": description
+        }
+        self.crime_data.append(crime_entry)
+        print("Crime reported successfully.")
+
+    def view_crime_data(self):
+        for crime in self.crime_data:
+            print(f"Timestamp: {crime['timestamp']}, Location: {crime['location']}, Type: {crime['crime_type']}, Description: {crime['description']}")
+
+    def save_to_file(self, filename="crime_data.json"):
+        with open(filename, 'w') as file:
+            json.dump(self.crime_data, file)
+        print(f"Data saved to {filename}.")
+
+    def load_from_file(self, filename="crime_data.json"):
+        try:
+            with open(filename, 'r') as file:
+                self.crime_data = json.load(file)
+            print(f"Data loaded from {filename}.")
+        except FileNotFoundError:
+            print(f"{filename} not found. Starting with an empty dataset.")
+
+# Example usage
+crime_tracker = CrimeTracker()
+
+# Report a crime
+crime_tracker.report_crime("Main Street", "Robbery", "Armed robbery at a convenience store")
+
+# View crime data
+crime_tracker.view_crime_data()
+
+# Save data to a file
+crime_tracker.save_to_file()
+
+# Load data from a file
+crime_tracker.load_from_file()
+
+# View crime data after loading from a file
+crime_tracker.view_crime_data()
